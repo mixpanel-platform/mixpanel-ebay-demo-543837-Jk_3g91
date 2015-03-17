@@ -6,10 +6,17 @@
     <script src="https://cdn.mxpnl.com/libs/mixpanel-platform/build/mixpanel-platform.v0.latest.min.js"></script>
   </head>
   <body class="mixpanel-platform-body">
-    <h1>Hello, World!</h1>
     <script>
       MP.api.ready(function() {
-        // Run queries and display results here
+        MP.api.query('/api/2.0/export/', {from_date: '2015-01-01', to_date: '2015-01-31' unit: 'day'}, {dataType: 'json'})
+        .done(function(results) {
+            console.log('got json\n', results);
+            var jsonobj = results.values();
+            console.log(jsonobj['distinct_id']);
+        })
+        .fail(function($xhr) {
+          console.log('error with request', $xhr);
+        });
       });
     </script>
   </body>
