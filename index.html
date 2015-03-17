@@ -8,11 +8,11 @@
   <body class="mixpanel-platform-body">
     <script>
       MP.api.ready(function() {
-        MP.api.query('/api/2.0/export/', {from_date: '2015-01-01', to_date: '2015-01-31' unit: 'day'}, {dataType: 'json'})
+        MP.api.query('/api/2.0/export/', {from_date: '2015-01-01', to_date: '2015-01-31', unit: 'day'}, {dataType: 'json'})
         .done(function(results) {
             console.log('got json\n', results);
             var jsonobj = results.values();
-            console.log(jsonobj['distinct_id']);
+            console.log(jsonobj['event']);
         })
         .fail(function($xhr) {
           console.log('error with request', $xhr);
