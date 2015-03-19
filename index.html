@@ -82,7 +82,6 @@
           sums = {0:0, 1:0, 2:0, 3:0, 4:0, 5:0, 6:0, 7:0, 8:0, 9:0, 10:0, 11:0, 12:0, 13:0, 14:0, 15:0};
           var results_keys = Object.keys(totalResults);
           for(i=0; i<results_keys.length; i++){
-            console.log(current_date.toISOString().substring(9,10));
             if(current_date.toISOString().substring(9, 10) == '1'){
               finalResults[current_date.toISOString().substring(0, 10)] = {'0': 0};
               finalResults[current_date.toISOString().substring(0, 10)]['0'] = totalResults[current_date.toISOString().substring(0, 10)]['first'] - sumFirst;
@@ -93,7 +92,6 @@
               }
               sumFirst = 0;
               sums = {0:0, 1:0, 2:0, 3:0,4:0, 5:0, 6:0, 7:0, 8:0, 9:0, 10:0, 11:0, 12:0, 13:0, 14:0, 15:0};
-              console.log('sums fixed');
             }
             else{
               finalResults[current_date.toISOString().substring(0, 10)] = {'0': 0};
