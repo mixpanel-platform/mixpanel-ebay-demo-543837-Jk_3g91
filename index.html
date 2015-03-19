@@ -73,7 +73,7 @@
         }
         
         var plotResults = function(current_date, totalResults) {
-          console.log(totalResults);
+          var old_date = current_date;
           current_date.setDate(current_date.getDate() - 1);
           finalResults = {};
           sumFirst = 0;
@@ -93,7 +93,7 @@
               finalResults[current_date.toISOString().substring(0, 10)][j+1] = totalResults[current_date.toISOString().substring(0, 10)]['counts'][j] - sums[j];
               sums[j] = totalResults[current_date.toISOString().substring(0, 10)]['counts'][j]
               }
-            var old_date = current_date;
+            old_date = current_date;
             current_date.setDate(current_date.getDate() - 1);
           }
           eventTable.MPTable('setData', finalResults);
