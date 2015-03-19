@@ -49,7 +49,7 @@
             var current_date = dateRange.from;
             MP.api.retention(eventName2, params).done(function(results) {
                 data = results.values();
-                processResults(data, eventName, current_date, {});
+                processResults(data, eventName2, current_date, {});
             });
           }
         }
