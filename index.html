@@ -73,10 +73,11 @@
         }
         
         var plotResults = function(current_date, totalResults) {
+          console.log(totalResults);
           current_date.setDate(current_date.getDate() - 1);
           finalResults = {};
           sumFirst = 0;
-          sums = {0:0, 1:0, 2:0, 3:0, 4:0, 5:0, 6:0};
+          sums = {0:0, 1:0, 2:0, 3:0, 4:0, 5:0, 6:0, 7:0, 8:0, 9:0, 10:0, 11:0, 12:0, 13:0, 14:0, 15:0};
           var results_keys = Object.keys(totalResults);
           for(i=0; i<results_keys.length; i++){
             finalResults[current_date.toISOString().substring(0, 10)] = {'0': 0};
@@ -91,7 +92,7 @@
             current_date.setDate(current_date.getDate() - 1);
             if(current_date.getMonth() != old_date.getMonth()){
               sumFirst = 0;
-              sums = {0:0, 1:0, 2:0, 3:0,4:0, 5:0, 6:0};
+              sums = {0:0, 1:0, 2:0, 3:0,4:0, 5:0, 6:0, 7:0, 8:0, 9:0, 10:0, 11:0, 12:0, 13:0, 14:0, 15:0};
             }
           }
           eventTable.MPTable('setData', finalResults);
