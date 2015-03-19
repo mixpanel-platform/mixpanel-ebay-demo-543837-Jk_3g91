@@ -45,7 +45,7 @@
           params['born_event'] = eventName1;
           var range =  Math.floor((Date.parse(dateRange.to) - Date.parse(dateRange.from)) / 86400000);
           
-          if (eventName) {
+          if (eventName1 && eventName2) {
             var current_date = dateRange.from;
             MP.api.retention(eventName2, params).done(function(results) {
                 data = results.values();
