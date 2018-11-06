@@ -1,129 +1,2217 @@
-<!doctype html>
+<!DOCTYPE html>
 <html>
   <head>
+    <meta charset="utf-8">
     <link rel="stylesheet" type="text/css" href="https://cdn.mxpnl.com/libs/mixpanel-platform/css/reset.css">
     <link rel="stylesheet" type="text/css" href="https://cdn.mxpnl.com/libs/mixpanel-platform/build/mixpanel-platform.v0.latest.min.css">
+    <!--<link rel="stylesheet" type="text/css" href="./style.css">-->
     <script src="https://cdn.mxpnl.com/libs/mixpanel-platform/build/mixpanel-platform.v0.latest.min.js"></script>
+    <!--<script type="text/javascript" src="./credentials.js"></script>    -->
   </head>
+  <style>
+    body {
+      max-width: 1471px;
+      min-width: 981px;
+      color: #3b3f58;    
+    }
+
+    .column-wrapper {
+      display: flex;
+      justify-content: space-around;
+    }
+
+    .column {
+      width: 49%;
+      padding: 10px;
+    }
+
+    .column-left {
+      border-right: 2px solid #d6dae5;
+    }
+
+    .column-section {
+      padding-top: 15px;
+      padding-bottom: 20px;
+      border-bottom: 2px solid #d6dae5;
+    }
+
+    .column-label {
+      display: block;
+      padding-bottom: 10px;
+    }
+
+    .inputs-bottom {
+      margin-top: 10px;
+      margin-left: 10px;
+      margin-right: 10px;
+      padding-bottom: 30px;
+      border-bottom: 2px solid #d6dae5;
+    }
+
+    .global-prop-filters {
+      padding-top: 10px;
+      padding-bottom: 25px;
+    }
+
+    .input-toggles {
+      display: flex;
+        justify-content: space-around;
+        max-width: 950px;
+      margin: 30px auto;
+    }
+
+    .rounded-toggle-wrapper {
+      display: inline-block;
+    }
+
+    .rounded-toggle-wrapper > * {
+      display: inline-block;
+    }
+
+    .rounded-toggle-wrapper:hover {
+      cursor: pointer;
+    }
+
+    .rounded-toggle-title {
+        display: block;
+        text-align: center;
+        padding-bottom: 10px;
+        font-weight: 500;
+        font-size: 1.5em;
+        color: #3b3f58;
+    }
+
+    .rounded-toggle-text {
+      font-size: 1.5em;
+      font-weight: 500;
+      vertical-align: text-bottom;
+      margin-left: 5px;
+      margin-right: 5px;
+      color: #95999c;
+      transition: all 0.22s;
+    }
+
+    .rounded-toggle-text:after {
+      content: '';
+      width: 0%;
+      display: block;
+      height: 2px;
+      background-color: silver;
+      transition: all 0.22s;
+      margin-left: auto;
+      margin-right: auto;
+    }
+
+    .rounded-toggle-text-selected {
+      color: #2588df;
+    }
+
+    .rounded-toggle-text-selected:after {
+      content: '';
+      width: 100%;
+      display: block;
+      height: 2px;
+      background-color: #0759a2
+    }
+
+    .rounded-toggle-bar {
+      height: 26px;
+      width: 50px;
+      background-color: #c0c0c0;
+      border-radius: 20px;
+      transition: all 0.22s;
+    }
+
+    .rounded-toggle-bar-right {
+      background-color: #dac4c4;
+    }
+
+    .rounded-toggle-circle {
+      width: 22px;
+        height: 22px;
+        background-color: #2588df;
+        border-radius: 100%;
+        margin-top: 2px;
+        transition: all 0.26s;
+    }
+
+    .rounded-toggle-circle-left {
+      margin-left: 3px;
+    }
+
+    .rounded-toggle-circle-right {
+      margin-left: 25px;
+    }
+
+    #run, #export, #generate, #annotationRun {
+      padding: 14px 32px;
+      margin: 0 auto;
+    }
+
+    #run:hover, #export:hover, #generate:hover, #annotationRun:hover {
+      background-image: linear-gradient(#60abe7,#408edd);
+    }
+
+    #left_universe, #right_universe {
+      margin-top: 15px;
+      margin-bottom: 15px;
+    }
+
+    .alert-ok:hover {
+      cursor: pointer;
+      background-color: #c7c7c7;
+    }
+
+    .comparison-table-header {
+      width: 25%;
+      text-align: center;
+      font-weight: bold;
+      font-size: 15px;
+      border: 1px solid #b2b2b2;
+    }
+
+    .comparison-table-data {
+      width: 25%;
+      text-align: center;
+      font-weight: bold;
+      font-size: 15px;
+      border: 1px solid #b2b2b2;
+    }
+
+    .annotation-table-data {
+      width: 25%;
+      text-align: center;
+      font-weight: bold;
+      font-size: 15px;
+      border: 1px solid #b2b2b2;
+    }
+
+    .events_label {
+        font-weight: bold;
+        font-size: 15px;
+        margin-right: 8px;
+        margin-left: 8px;
+        display: inline-block;
+    }
+
+    .date_select.inline.block, .event_select_left.inline.block, .event_select_right.inline.block, .event_select_filter_left.inline.block, .event_select_filter_right.inline.block, .prop_select.inline.block, .behavior_select.inline.block, .right-arrow, #add, #leftAdd, #rightAdd, #leftAddFilter, #rightAddFilter, #addProps, #addLeftProps, #addRightProps, #remove, #leftRemove, #rightRemove, #leftRemoveFilter, #rightRemoveFilter, #removeProps, #removeLeftProps, #removeRightProps {
+        display: inline-block;
+        vertical-align: middle;
+    }
+
+    .event_select_left.inline.block, .event_select_right.inline.block, .event_select_filter_left.inline.block, .event_select_filter_right.inline.block {
+        max-width: 200px;
+        margin: 10px 0;
+    }
+
+    .dates, .options {
+        margin-bottom: 10px;
+    }
+
+    .right-arrow {
+        background: url(//cdn.mxpnl.com/cache/0a836ac387413f8cfa0ac97c5618c8bf/images/reports/arrow-dropshadow.png) no-repeat;
+        background-position: 0 0;
+        height: 10px;
+        width: 10px;
+        margin: 10px;
+    }
+
+    #add, #leftAdd, #rightAdd, #leftAddFilter, #rightAddFilter, #addProps, #addLeftProps, #addRightProps {
+        background: url(https://cdn.mxpnl.com/cache/db85795727e3c42d2865a215cd85876a/images/reports/funnels3/new_row_spritesheet.png);
+        width: 30px;
+        height: 30px;
+        cursor: pointer;
+        position: relative;
+        margin-left: 15px;
+    }
+
+    #add:hover, #leftAdd:hover, #rightAdd:hover, #leftAddFilter:hover, #rightAddFilter:hover, #addProps:hover, #addLeftProps:hover, #addRightProps:hover {
+        background-position: 0px -30px;
+      }
+
+    #add:active, #leftAdd:active, #rightAdd:active, #leftAddFilter:active, #rightAddFilter:active, #addProps:active, #addLeftProps:active, #addRightProps:active {
+        background-position: 0px 30px;
+    }
+
+    #remove, #leftRemove, #rightRemove, #leftRemoveFilter, #rightRemoveFilter, #removeProps, #removeLeftProps, #removeRightProps {
+        background: url(https://cdn.mxpnl.com/cache/56293702dece344ed45c9d09d46cc548/images/icons/message-x-sprites.png);
+        width: 18px;
+        height: 18px;
+        cursor: pointer;
+        position: relative;
+        margin-left: 15px;
+    }
+
+    #remove:hover, #leftRemove:hover, #rightRemove:hover, #leftRemove:hover, #leftRemoveFilter:hover, #rightRemoveFilter:hover,  #removeProps:hover, #removeLeftProps:hover, #removeRightProps:hover {
+        background-position: 0px 18px;
+    }
+
+    #run, #annotationRun, #export, #generate {
+        clear:both;
+        vertical-align: 1px;
+        text-align: center;
+        padding: 20px 10px;
+        background-color: #61adf0;
+        background-image: -webkit-linear-gradient(#6ab5f2,#53a0ee);
+        background-image: linear-gradient(#6ab5f2,#53a0ee);
+        box-shadow: inset 0 1px 1px #77bdf4,0 2px 2px -1px rgba(0,0,0,0.2);
+        text-transform: uppercase;
+        border: 1px solid #4d93d7;
+        color: #fff;
+        text-shadow: 0 -1px 0 rgba(0,0,0,0.2);
+        border-radius: 3px;
+        cursor: pointer;
+        font-weight: bold;
+        max-width: 150px;
+        margin-left: 20px;
+        display: inline-block;
+    }
+
+    .alert {
+        display: none;
+        position: fixed;
+        margin: 0 auto;
+        left: 0;
+        right: 0;
+        top: 30%;
+        margin-top: -75px;
+        z-index: 20;
+        background-color: #fbfbfb;
+        border: 1px solid #c4c9d8;
+        padding: 20px;
+        width: 300px;
+        min-height: 150px;
+        border-radius: 5px;
+    }
+
+    .alert-title {
+        text-transform: uppercase;
+        font-weight: 600;
+        margin: 15px;
+    }
+
+    .alert-content {
+        margin: 15px;
+        line-height: 25px;
+    }
+
+    .alert-ok {
+        display: inline-block;
+        margin-left: 10px;
+        position: absolute;
+        bottom: 15px;
+        right: 35px;
+        padding: 10px 16px;
+        font-weight: 600;
+        background-color: #dedede;
+        border-radius: 3px;
+        transition: all 0.2s;
+    }
+
+    #input {
+        width: 75%;
+    }
+
+    .buttons {
+        display: flex;
+        justify-content: space-around;
+        max-width: 950px;
+      margin: 30px auto;
+    }
+  </style>
   <body class="mixpanel-platform-body">
     <div class="mixpanel-platform-section">
-      <div id="eventSelect1" style="float: left;"></div>
-      <div id="birth" class="mixpanel-platform-label" style="margin-left: 10px;">cohorts</div>
-      <div id="dateSelect" style="float: right;"></div>
-      <div style="clear: both;"></div>
-      <div id="eventSelect2" style="float: left;"></div>
-      <div id="retention" class="mixpanel-platform-label" style="margin-left: 10px;">retention</div>
-      <div id="blank" style="float: right;"></div>
-      <div style="clear: both;"></div>
-      <div id="graph"></div>
+      <div class="column-wrapper">
+        <!-- Left Column -->
+        <div class="column column-left">
+          <h3>Left Funnel</h3>
+
+          <div class="column-section leftDateRange">
+            <div class="events_label">Date Range:</div>
+            <div id="leftDates" class="date_select inline block"></div>
+          </div>
+
+          <div class="column-section" id="leftEventsFilter">
+            <div class="column-label events_label">Prior Activity:</div>
+            <div id="leftAddFilter"></div>
+            <div id="leftRemoveFilter"></div>
+          </div>
+
+          <div class="column-section" id="leftEvents">
+            <div class="column-label events_label">Steps:</div>
+            <div id="leftAdd"></div>
+            <div id="leftRemove"></div>
+          </div>
+
+          <div class="column-section" id="leftProps">
+            <div class="column-label events_label">Property Filters:</div>
+            <div id="addLeftProps"></div>
+            <div id="removeLeftProps"></div>
+          </div>
+        </div>
+
+        <!-- Right Column -->
+        <div class="column column-right">
+        <h3>Right Funnel</h3>
+
+          <div class="column-section rightDateRange">
+            <div class="events_label">Date Range:</div>
+            <div id="rightDates" class="date_select inline block"></div>
+          </div>
+
+          <div class="column-section" id="rightEventsFilter">
+            <div class="column-label events_label">Prior Activity:</div>
+            <div id="rightAddFilter"></div>
+            <div id="rightRemoveFilter"></div>
+          </div>
+
+          <div class="column-section" id="rightEvents">
+            <div class="column-label events_label">Steps:</div>
+            <div id="rightAdd"></div>
+            <div id="rightRemove"></div>
+          </div>
+
+          <div class="column-section" id="rightProps">
+            <div class="column-label events_label">Property Filters:</div>
+            <div id="addRightProps"></div>
+            <div id="removeRightProps"></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="inputs-bottom">
+        <div class="global-prop-filters" id="props">
+          <div class="events_label">Global Property Filters:</div>
+          <div id="addProps"></div>
+          <div id="removeProps"></div>
+        </div>
+
+        <div class="global-prop-filters" id="props">
+          <div class="events_label">Saved Report Params (Optional):</div>
+          <input type="text" id="input"></input>
+        </div>
+
+        <div class="input-toggles">
+          <!-- Toggle for chart count (total/unique) -->
+          <div>
+              <div class="rounded-toggle-title">Chart Count</div>              
+            <div id="chart-count-toggle" class="rounded-toggle-wrapper">
+              <div class="rounded-toggle-text rounded-toggle-text-left rounded-toggle-text-selected">Unique</div>
+              <div class="rounded-toggle-bar">
+                <div class="rounded-toggle-circle rounded-toggle-circle-left"></div>
+              </div>
+              <div class="rounded-toggle-text rounded-toggle-text-right">Total</div>
+            </div>
+          </div>
+          <!-- Toggle for chart type (bar/line) -->
+          <div>
+              <div class="rounded-toggle-title">Chart Type</div>
+            <div id="chart-type-toggle" class="rounded-toggle-wrapper">
+              <div class="rounded-toggle-text rounded-toggle-text-left rounded-toggle-text-selected">Bar</div>
+              <div class="rounded-toggle-bar">
+                <div class="rounded-toggle-circle rounded-toggle-circle-left"></div>
+              </div>
+              <div class="rounded-toggle-text rounded-toggle-text-right">Line</div>
+            </div>
+          </div>
+          <!-- Dropdown for Units -->
+          <div>
+            <div class="rounded-toggle-title">Units</div>
+            <div id="unitType" class="date_select inline block"></div>
+          </div>          
+        </div>
+        
+        <!-- Depracated Dropdowns
+        <div class="options">
+
+
+          <div class="events_label">Totals or Uniques:</div>
+          <div id="queryType" class="date_select inline block"></div>
+          <div class="events_label">Bar or Line Graph:</div>
+          <div id="graphType" class="date_select inline block"></div>
+
+
+        </div>
+        -->
+        <div class="buttons">
+          <div id="run">RUN REPORT</div>
+          <div id="generate">GENERATE PARAMS</div>
+          <div id="export">EXPORT DATA</div>
+        </div>
+      </div>
+      
+
+      <!-- Begin Results -->
+      <div id="graphs">
+        <table>
+          <tr>
+            <td width="500"><div class="events_label" id="left_universe" align="center"></div></td>
+            <td width="100"></td>
+            <td width="500"><div class="events_label" id="right_universe" align="center"></div></td>
+          </tr>
+          <tr>
+            <td width="500"><div class="funnelGraph" id="funnelLeft" align="center"></div><div class="funnelGraph" id="funnelLeftBar" align="center"></div></td>
+            <td width="100"></td>
+            <td width="500"><div class="funnelGraph" id="funnelRight" align="center"></div><div class="funnelGraph" id="funnelRightBar" align="center"></div></td>
+          </tr>
+        </table>
+      </div>
+      <br>
+      <div>
+        <div id="table"></div>
+      </div>
+      <br>
+      <div>
+        <div id="annotations"></div>
+      </div>
+      <br>
+      <div class="annotationAdd">
+        <div class="events_label" id="annotationDate"></div>
+        <div class="events_label" id="annotationText"></div>
+        <div class="events_label" id="annotationRun"></div>
+      </div>
     </div>
-    <div id="table"></div>
+    
     <script>
-      MP.api.ready(function() {
-        var eventSelect1 = $('#eventSelect1').MPEventSelect();
-        var eventSelect2 = $('#eventSelect2').MPEventSelect();
-        var dateSelect  = $('#dateSelect').MPDatepicker();
-        var eventGraph  = $('#graph').MPChart({chartType: 'line'});
-        var eventTable  = $('#table').MPTable({
-          showPercentages: true,
-          firstColHeader: 'Date'
-        });
-        
-        var params = {
-          'from': '2015-01-01', //moment(),
-          'to': '2015-01-01', //moment(),
-          'unit': 'month',
-          'interval_count': 12,
-          'born_event': '$signup'
-        };
-          
-        var runQuery = function() {
-          var eventName1 = eventSelect1.MPEventSelect('value'),
-              eventName2 = eventSelect2.MPEventSelect('value'),
-              dateRange = dateSelect.MPDatepicker('value');
-          
-          params['from'] = dateRange.from.toISOString().substring(0, 10);
-          params['to'] = dateRange.to.toISOString().substring(0, 10);
-          params['born_event'] = eventName1;
-          var range =  Math.floor((Date.parse(dateRange.to) - Date.parse(dateRange.from)) / 86400000);
-          
-          if (eventName1 && eventName2) {
-            var current_date = dateRange.from;
-            MP.api.retention('', params).done(function(results) {
-                data = results.values();
-                processResults(data, '', current_date, {});
-            });
-          }
+
+      // Toggle variables & logic
+      var chartTypeState = "left";
+      var chartTypeLeft = "bar";
+      var chartTypeRight = "line";
+      var chartTypeVal = chartTypeLeft;
+
+      var chartCountState = "left";
+      var chartCountLeft = "unique";
+      var chartCountRight = "total";
+      var chartCountVal = chartCountLeft;
+
+      $('#chart-type-toggle').on('click', function() {
+        var toggle = $('#chart-type-toggle');
+        // Select Right Toggle
+        if (chartTypeState === 'left') {
+          chartTypeState = 'right';
+          chartTypeVal = chartTypeRight;
+
+          toggle.find($('.rounded-toggle-text-right')).addClass('rounded-toggle-text-selected');
+          toggle.find($('.rounded-toggle-text-left')).removeClass('rounded-toggle-text-selected');
+
+          toggle.find($('.rounded-toggle-circle')).removeClass('rounded-toggle-circle-left');
+          toggle.find($('.rounded-toggle-circle')).addClass('rounded-toggle-circle-right');
+
+          toggle.find($('.rounded-toggle-text-left')).removeClass('rounded-toggle-circle-left-selected');
+          toggle.find($('.rounded-toggle-text-right')).addClass('rounded-toggle-circle-right-selected');
         }
-        
-        var processResults = function(data, eventName, current_date, totalResults) {
-          totalResults[current_date.toISOString().substring(0, 10)] = data[current_date.toISOString().substring(0, 10)];
-          current_date.setDate(current_date.getDate() + 1);
-          loopQuery(eventName, current_date, totalResults);
+        // Select Left Toggle        
+        else {
+          chartTypeState = 'left';
+          chartTypeVal = chartTypeRight;
+
+          toggle.find($('.rounded-toggle-text-left')).addClass('rounded-toggle-text-selected');
+          toggle.find($('.rounded-toggle-text-right')).removeClass('rounded-toggle-text-selected');
+
+          toggle.find($('.rounded-toggle-circle')).removeClass('rounded-toggle-circle-right');
+          toggle.find($('.rounded-toggle-circle')).addClass('rounded-toggle-circle-left');
+
+          toggle.find($('.rounded-toggle-text-left')).addClass('rounded-toggle-circle-left-selected');
+          toggle.find($('.rounded-toggle-text-right')).removeClass('rounded-toggle-circle-right-selected');                    
         }
-        
-        var loopQuery = function(eventName, current_date, totalResults){
-          params['from'] = current_date.toISOString().substring(0, 10);
-          if(params['from'] != params['to']){
-            MP.api.retention(eventName, params).done(function(results) {
-              data = results.values();
-              processResults(data, eventName, current_date, totalResults);
-            });
-          }
-          else{
-            plotResults(current_date, totalResults);
-          }
-        }
-        
-        var plotResults = function(current_date, totalResults) {
-          current_date.setDate(current_date.getDate() - 1);
-          finalResults = {};
-          sumFirst = 0;
-          sums = {0:0, 1:0, 2:0, 3:0, 4:0, 5:0, 6:0, 7:0, 8:0, 9:0, 10:0, 11:0, 12:0, 13:0, 14:0, 15:0};
-          var results_keys = Object.keys(totalResults);
-          for(i=0; i<results_keys.length; i++){
-            if(current_date.toISOString().substring(9, 10) == '1'){
-              finalResults[current_date.toISOString().substring(0, 10)] = {'0': 0};
-              finalResults[current_date.toISOString().substring(0, 10)]['0'] = totalResults[current_date.toISOString().substring(0, 10)]['first'] - sumFirst;
-              var counts_keys = Object.keys(totalResults[current_date.toISOString().substring(0, 10)]['counts']);
-              for(j=0; j<counts_keys.length; j++){
-                finalResults[current_date.toISOString().substring(0, 10)][j+1] = totalResults[current_date.toISOString().substring(0, 10)]['counts'][j] - sums[j];
-                sums[j] = totalResults[current_date.toISOString().substring(0, 10)]['counts'][j];
-              }
-              sumFirst = 0;
-              sums = {0:0, 1:0, 2:0, 3:0,4:0, 5:0, 6:0, 7:0, 8:0, 9:0, 10:0, 11:0, 12:0, 13:0, 14:0, 15:0};
-            }
-            else{
-              finalResults[current_date.toISOString().substring(0, 10)] = {'0': 0};
-              finalResults[current_date.toISOString().substring(0, 10)]['0'] = totalResults[current_date.toISOString().substring(0, 10)]['first'] - sumFirst;
-              sumFirst = totalResults[current_date.toISOString().substring(0, 10)]['first'];
-              var counts_keys = Object.keys(totalResults[current_date.toISOString().substring(0, 10)]['counts']);
-              for(j=0; j<counts_keys.length; j++){
-                finalResults[current_date.toISOString().substring(0, 10)][j+1] = totalResults[current_date.toISOString().substring(0, 10)]['counts'][j] - sums[j];
-                sums[j] = totalResults[current_date.toISOString().substring(0, 10)]['counts'][j];
-              }
-            }
-            current_date.setDate(current_date.getDate() - 1);
-          }
-          eventTable.MPTable('setData', finalResults);
-        }
-        
-        dateSelect.on('change', function(e, dateRange) {
-          runQuery();
-        });
-              
-        eventSelect1.on('change', function(e, eventName) {
-          eventSelect2.MPEventSelect();
-          $("#birth").show();
-          $("#retention").show();
-          runQuery();
-        });
-        
-        eventSelect2.on('change', function(e, eventName) {
-          runQuery();
-        });
-        
       });
+
+      $('#chart-count-toggle').on('click', function() {
+        var toggle = $('#chart-count-toggle');
+        // Select Right Toggle
+        if (chartCountState === 'left') {
+          chartCountState = 'right';
+          chartCountVal = chartCountRight;
+
+          toggle.find($('.rounded-toggle-text-right')).addClass('rounded-toggle-text-selected');
+          toggle.find($('.rounded-toggle-text-left')).removeClass('rounded-toggle-text-selected');
+
+          toggle.find($('.rounded-toggle-circle')).removeClass('rounded-toggle-circle-left');
+          toggle.find($('.rounded-toggle-circle')).addClass('rounded-toggle-circle-right');
+
+          toggle.find($('.rounded-toggle-text-left')).removeClass('rounded-toggle-circle-left-selected');
+          toggle.find($('.rounded-toggle-text-right')).addClass('rounded-toggle-circle-right-selected');
+        }
+        // Select Left Toggle        
+        else {
+          chartCountState = 'left';
+          chartCountVal = chartCountRight;
+
+          toggle.find($('.rounded-toggle-text-left')).addClass('rounded-toggle-text-selected');
+          toggle.find($('.rounded-toggle-text-right')).removeClass('rounded-toggle-text-selected');
+
+          toggle.find($('.rounded-toggle-circle')).removeClass('rounded-toggle-circle-right');
+          toggle.find($('.rounded-toggle-circle')).addClass('rounded-toggle-circle-left');
+
+          toggle.find($('.rounded-toggle-text-left')).addClass('rounded-toggle-circle-left-selected');
+          toggle.find($('.rounded-toggle-text-right')).removeClass('rounded-toggle-circle-right-selected');                    
+        }
+      });
+      // End Toggle variables & logic
+
+      // add elements
+      var leftEventFilterList = [];
+      var rightEventFilterList = [];
+      var leftFilterBehaviorList = [];
+      var rightFilterBehaviorList = [];
+      var leftFilterDateList = [];
+      var rightFilterDateList = [];
+      var leftEventList = [];
+      var rightEventList = [];
+      var propList = [];
+      var valueList = [];
+      var leftPropList = [];
+      var leftValueList = [];
+      var rightPropList = [];
+      var rightValueList = [];
+      var priorValues = {};
+      var priorLeftValues = {};
+      var priorRightValues = {};
+      var paramsLoaded = false;
+      var globalEventsOptions = { items: [] };
+      var globalPropsOptions = { items: [] };
+      var $leftEventsFilter = $('#leftEventsFilter');
+      var $leftAddFilter = $('#leftEventsFilter').find('#leftAddFilter');
+      var $rightEventsFilter = $('#rightEventsFilter');
+      var $rightAddFilter = $('#rightEventsFilter').find('#rightAddFilter');
+      var $leftEvents = $('#leftEvents');
+      var $leftAdd = $('#leftEvents').find('#leftAdd');
+      var $rightEvents = $('#rightEvents');
+      var $rightAdd = $('#rightEvents').find('#rightAdd');
+      var $props = $('#props');
+      var $addProps = $('#props').find('#addProps');
+      var $leftProps = $('#leftProps');
+      var $addLeftProps = $('#leftProps').find('#addLeftProps');
+      var $rightProps = $('#rightProps');
+      var $addRightProps = $('#rightProps').find('#addRightProps');
+      $('#leftDates').MPDatepicker();
+      $('#rightDates').MPDatepicker();
+      $('#annotationRun').hide();
+      /*
+      Currently depracating the dropdowns for queryType and graphType
+      var queryOptions = {
+        items: [
+          {label: 'Unique', value: 'unique'},
+          {label: 'Total', value: 'total'},
+        ]
+      };
+      $('#queryType').MPSelect(queryOptions);
+      var graphOptions = {
+        items: [
+          {label: 'Bar', value: 'bar'},
+          {label: 'Line', value: 'line'},
+        ]
+      };
+      $('#graphType').MPSelect(graphOptions);
+      */
+      var unitOptions = {
+        items: [
+          {label: 'Day', value: 'day'},
+          {label: 'Week', value: 'week'},
+          {label: 'Month', value: 'month'},
+        ]
+      };
+      $('#unitType').MPSelect(unitOptions);
+      var leftExportData;
+      var rightExportData;
+
+      //MP.api.setCredentials('')
+
+      MP.api.topEvents().done(function(results) {
+        console.log(results.values())
+        _.each(results.values(), function(item) {
+          globalEventsOptions.items.push({label: item, value: item});
+        });
+      });
+
+      MP.api.topProperties().done(function(results) {
+        console.log(results.values())
+        var props = Object.keys(results.values()).sort()
+        _.each(props, function(item) {
+          globalPropsOptions.items.push({label: item, value: item});
+        });
+      });
+
+      function addLeftEventFilter(i, priorEvent) {
+        if (i > 0) {
+          $('<div class="events_label left_filter" id="' + i + '"> AND </div>').insertBefore($leftAddFilter);
+        }
+
+        var localOptions = globalEventsOptions;
+        if(priorEvent) {
+          var index = localOptions.items.indexOf(priorEvent);
+          delete localOptions.items[index];
+          localOptions.items.unshift({label: priorEvent, value: priorEvent});
+        }
+
+        var eventSelectFilter = $('<div class="event_select_filter_left inline block" id="' + i + '"></div>').insertBefore($leftAddFilter).MPSelect(localOptions);
+
+        $('<div class="right-arrow left_filter_events" id="' + i + '"></div>').insertBefore($leftAddFilter);
+
+        var options = {};
+        options.items = [];
+        options.items.push({label: 'Was Performed', value: 'true'});
+        options.items.push({label: 'Was Not Performed', value: 'false'});
+
+        var filterSelect = $('<div class="behavior_select inline block behavior_selector_left" id="' + i + '"></div>').insertBefore($leftAddFilter).MPSelect(options);
+
+        $('<div class="events_label left_behavior_filter_between" id="' + i + '"> BETWEEN </div>').insertBefore($leftAddFilter);
+        var fromBehaviorSelect = $('<input class="behavior_select inline block behavior_selector_from_left" id="' + i + '"></input>').insertBefore($leftAddFilter);
+        $('<div class="events_label left_behavior_filter_and" id="' + i + '"> AND </div>').insertBefore($leftAddFilter);
+        var fromBehaviorSelect = $('<input class="behavior_select inline block behavior_selector_to_left" id="' + i + '"></input>').insertBefore($leftAddFilter);
+        $('<div class="events_label left_behavior_filter_daysago" id="' + i + '"> DAYS AGO </div>').insertBefore($leftAddFilter);
+      }
+
+      function addRightEventFilter(i, priorEvent) {
+        if (i > 0) {
+          $('<div class="events_label right_filter" id="' + i + '"> AND </div>').insertBefore($rightAddFilter);
+        }
+
+        var localOptions = globalEventsOptions;
+        if(priorEvent) {
+          var index = localOptions.items.indexOf(priorEvent);
+          delete localOptions.items[index];
+          localOptions.items.unshift({label: priorEvent, value: priorEvent});
+        }
+
+        var eventSelectFilter = $('<div class="event_select_filter_right inline block" id="' + i + '"></div>').insertBefore($rightAddFilter).MPSelect(localOptions);
+
+        $('<div class="right-arrow right_filter_events" id="' + i + '"></div>').insertBefore($rightAddFilter);
+
+        var options = {};
+        options.items = [];
+        options.items.push({label: 'Was Performed', value: 'true'});
+        options.items.push({label: 'Was Not Performed', value: 'false'});
+
+        var filterSelect = $('<div class="behavior_select inline block behavior_selector_right" id="' + i + '"></div>').insertBefore($rightAddFilter).MPSelect(options);
+
+        $('<div class="events_label right_behavior_filter_between" id="' + i + '"> BETWEEN </div>').insertBefore($rightAddFilter);
+        var fromBehaviorSelect = $('<input class="behavior_select inline block behavior_selector_from_right" id="' + i + '"></input>').insertBefore($rightAddFilter);
+        $('<div class="events_label right_behavior_filter_and" id="' + i + '"> AND </div>').insertBefore($rightAddFilter);
+        var fromBehaviorSelect = $('<input class="behavior_select inline block behavior_selector_to_right" id="' + i + '"></input>').insertBefore($rightAddFilter);
+        $('<div class="events_label right_behavior_filter_daysago" id="' + i + '"> DAYS AGO </div>').insertBefore($rightAddFilter);
+      }
+
+      function addLeftEvent(i, priorEvent) {
+        if (i > 0) {
+          $('<div class="right-arrow left_events" id="' + i + '"></div>').insertBefore($leftAdd);
+        }
+
+        var localOptions = globalEventsOptions;
+        if(priorEvent) {
+          var index = localOptions.items.indexOf(priorEvent);
+          delete localOptions.items[index];
+          localOptions.items.unshift({label: priorEvent, value: priorEvent});
+        }
+
+        var eventSelect = $('<div class="event_select_left inline block" id="' + i + '"></div>').insertBefore($leftAdd).MPSelect(localOptions);
+      }
+
+      function addRightEvent(i, priorEvent) {
+        if (i > 0) {
+          $('<div class="right-arrow right_events" id="' + i + '"></div>').insertBefore($rightAdd);
+        }
+
+        var localOptions = globalEventsOptions;
+        if(priorEvent) {
+          var index = localOptions.items.indexOf(priorEvent);
+          delete localOptions.items[index];
+          localOptions.items.unshift({label: priorEvent, value: priorEvent});
+        }
+        
+        var eventSelect = $('<div class="event_select_right inline block" id="' + i + '"></div>').insertBefore($rightAdd).MPSelect(localOptions);
+      }
+
+      function addProp(i, priorProp) {
+        if (i > 0){
+          var valueBuffer = $('<div class="events_label global_filter" id="' + i + '"> AND </div>').insertBefore($addProps);
+        }
+
+        var localOptions = globalPropsOptions;
+        if(priorProp) {
+          var index = localOptions.items.indexOf(priorProp);
+          delete localOptions.items[index];
+          localOptions.items.unshift({label: priorProp, value: priorProp});
+        }
+
+        var propSelect = $('<div class="prop_select inline block prop_selector" id="' + i + '"></div>').insertBefore($addProps).MPSelect(localOptions);
+
+        propSelect.on('change', function(e, prop) {
+            if(priorValues[i]) { // if we already have a property
+                if(priorValues[i] !== prop) { // if the value is new for the prop
+                    priorValues[i] = prop;
+                    propList[i] = prop;
+                    $($('.prop_selector')[i]).val(prop);
+                    
+                    MP.api.propertyValues(leftEventList[leftEventList.length-1], propList[i]).done(function(results) {
+                        var options = {};
+                        options.items = [];
+                        _.each(results.values(), function(item) {
+                            options.items.push({label: item, value: item});
+                        });
+
+                        if(i == Object.keys(priorValues).length-1) { // final item in array
+                            $($('.value_selector')[i]).remove();
+                            var valueSelect = $('<div class="prop_select inline block value_selector" id="' + i + '"></div>').insertBefore($addProps).MPSelect(options);
+                        } else { // not the final item in array
+                            $($('.value_selector')[i]).remove();
+                            var valueSelect = $('<div class="prop_select inline block value_selector" id="' + i + '"></div>').insertBefore($('.global_filter')[i]).MPSelect(options);
+                        }
+                    });
+                }
+            } else { // add initial values for props
+                priorValues[i] = prop;
+                propList[i] = prop;
+                $($('.value_selector')[i]).remove();
+                addValue(i);
+            }
+        });
+      }
+
+      function addValue(i, priorValue) {
+        $('<div class="right-arrow props_global" id="' + i + '"></div>').insertBefore($addProps);
+
+        MP.api.propertyValues(leftEventList[i], propList[i]).done(function(results) {
+          var options = {};
+          options.items = [];
+          if(priorValue) {
+            options.items.push({label: priorValue, value: priorValue});
+          }
+          _.each(results.values(), function(item) {
+            if(item !== priorValue) {
+              options.items.push({label: item, value: item});
+            }
+          });
+
+          var valueSelect = $('<div class="prop_select inline block value_selector" id="' + i + '"></div>').insertBefore($addProps).MPSelect(options);
+        });
+      }
+
+      function addLeftProp(i, priorProp) {
+        if (i > 0){
+          var valueLeftBuffer = $('<div class="events_label global_filter_left" id="' + i + '"> AND </div>').insertBefore($addLeftProps);
+        }
+
+        var localOptions = globalPropsOptions;
+        if(priorProp) {
+          var index = localOptions.items.indexOf(priorProp);
+          delete localOptions.items[index];
+          localOptions.items.unshift({label: priorProp, value: priorProp});
+        }
+
+        propLeftSelect = $('<div class="prop_select inline block prop_selector_left" id="' + i + '"></div>').insertBefore($addLeftProps).MPSelect(localOptions);
+
+        propLeftSelect.on('change', function(e, prop) {
+            if(priorLeftValues[i]) { // if we already have a property
+                if(priorLeftValues[i] !== prop) { // if the value is new for the prop
+                    priorLeftValues[i] = prop;
+                    leftPropList[i] = prop;
+                    $($('.prop_selector_left')[i]).val(prop);
+                    
+                    MP.api.propertyValues(leftEventList[leftEventList.length-1], leftPropList[i]).done(function(results) {
+                        var options = {};
+                        options.items = [];
+                        _.each(results.values(), function(item) {
+                            options.items.push({label: item, value: item});
+                        });
+
+                        if(i == Object.keys(priorLeftValues).length-1) { // final item in array
+                            $($('.value_selector_left')[i]).remove();
+                            var valueLeftSelect = $('<div class="prop_select inline block value_selector_left" id="' + i + '"></div>').insertBefore($addLeftProps).MPSelect(options);
+                        } else { // not the final item in array
+                            $($('.value_selector_left')[i]).remove();
+                            var valueLeftSelect = $('<div class="prop_select inline block value_selector_left" id="' + i + '"></div>').insertBefore($('.global_filter_left')[i]).MPSelect(options);
+                        }
+                    });
+                }
+            } else { // add initial values for props
+                priorLeftValues[i] = prop;
+                leftPropList[i] = prop;
+                $($('.value_selector_left')[i]).remove();
+                addLeftValue(i);
+            }
+        });
+      }
+
+      function addLeftValue(i, priorValue) {
+        $('<div class="right-arrow props_left" id="' + i + '"></div>').insertBefore($addLeftProps);
+
+        MP.api.propertyValues(leftEventList[leftEventList.length-1], leftPropList[i]).done(function(results) {
+          var options = {};
+          options.items = [];
+          if(priorValue) {
+            options.items.push({label: priorValue, value: priorValue});
+          }
+          _.each(results.values(), function(item) {
+            if(item !== priorValue) {
+              options.items.push({label: item, value: item});
+            }
+          });
+
+          var valueLeftSelect = $('<div class="prop_select inline block value_selector_left" id="' + i + '"></div>').insertBefore($addLeftProps).MPSelect(options);
+        });
+      }
+
+      function addRightProp(i, priorProp) {
+        if (i > 0){
+          var valueRightBuffer = $('<div class="events_label global_filter_right" id="' + i + '"> AND </div>').insertBefore($addRightProps);
+        }
+
+        var localOptions = globalPropsOptions;
+        if(priorProp) {
+          var index = localOptions.items.indexOf(priorProp);
+          delete localOptions.items[index];
+          localOptions.items.unshift({label: priorProp, value: priorProp});
+        }
+
+        var propRightSelect = $('<div class="prop_select inline block prop_selector_right" id="' + i + '"></div>').insertBefore($addRightProps).MPSelect(localOptions);
+
+        propRightSelect.on('change', function(e, prop) {
+            if(priorRightValues[i]) { // if we already have a property
+                if(priorRightValues[i] !== prop) { // if the value is new for the prop
+                    priorRightValues[i] = prop;
+                    rightPropList[i] = prop;
+                    $($('.prop_selector_right')[i]).val(prop);
+                    
+                    MP.api.propertyValues(rightEventList[rightEventList.length-1], rightPropList[i]).done(function(results) {
+                        var options = {};
+                        options.items = [];
+                        _.each(results.values(), function(item) {
+                            options.items.push({label: item, value: item});
+                        });
+
+                        if(i == Object.keys(priorRightValues).length-1) { // final item in array
+                            $($('.value_selector_right')[i]).remove();
+                            var valueRightSelect = $('<div class="prop_select inline block value_selector_right" id="' + i + '"></div>').insertBefore($addRightProps).MPSelect(options);
+                        } else { // not the final item in array
+                            $($('.value_selector_right')[i]).remove();
+                            var valueLeftSelect = $('<div class="prop_select inline block value_selector_right" id="' + i + '"></div>').insertBefore($('.global_filter_right')[i]).MPSelect(options);
+                        }
+                    });
+                }
+            } else { // add initial values for props
+                priorRightValues[i] = prop;
+                rightPropList[i] = prop;
+                $($('.value_selector_right')[i]).remove();
+                addRightValue(i);
+            }
+        });
+      }
+
+      function addRightValue(i, priorValue) {
+        $('<div class="right-arrow props_right" id="' + i + '"></div>').insertBefore($addRightProps);
+
+        MP.api.propertyValues(rightEventList[rightEventList.length-1], rightPropList[i]).done(function(results) {
+          var options = {};
+          options.items = [];
+          if(priorValue) {
+            options.items.push({label: priorValue, value: priorValue});
+          }
+          _.each(results.values(), function(item) {
+            if(item !== priorValue) {
+              options.items.push({label: item, value: item});
+            }
+          });
+
+          var valueRightSelect = $('<div class="prop_select inline block value_selector_right" id="' + i + '"></div>').insertBefore($addRightProps).MPSelect(options);
+        });
+      }
+
+      // error alerts
+      function error(message) {
+        var alert = $('<div class="alert"><div class="alert-title">Error</div><div class="alert-content">' + message + '</div><div class="alert-ok">OK</div></div>');
+        alert.appendTo('body').fadeIn(200);
+      }
+      // close alerts
+      $('body').on('click', '.alert-ok', function() {
+          $('.alert').remove();
+      });
+
+      $('#leftAddFilter').on('click', function() {
+        var numEvents = $('.event_select_filter_left').length;
+        addLeftEventFilter(numEvents);
+      });
+
+      $('#rightAddFilter').on('click', function() {
+        var numEvents = $('.event_select_filter_right').length;
+        addRightEventFilter(numEvents);
+      });
+
+      $('#leftAdd').on('click', function() {
+        var numEvents = $('.event_select_left').length;
+        addLeftEvent(numEvents);
+      });
+
+      $('#rightAdd').on('click', function() {
+        var numEvents = $('.event_select_right').length;
+        addRightEvent(numEvents);
+      });
+
+      $('#addProps').on('click', function() {
+        var numProps = $('.prop_selector').length;
+
+        var props = [];
+        for (var i = 0, j = $('.prop_selector').length; i < j; i++) {
+          var propName = $($('.prop_selector')[i]).val();
+          if (propName != null) {
+            props.push(propName);
+          }
+        }
+        propList = props;
+        console.log('props list: ' + propList);
+
+        var values = [];
+        for (var i = 0, j = $('.value_selector').length; i < j; i++) {
+          var valueName = $($('.value_selector')[i]).val();
+          if (valueName != null) {
+            values.push(valueName);
+          }
+        }
+        valueList = values;
+        console.log('values list: ' + valueList);
+
+        if(numProps > 0) {
+          if(propList.length < numProps) { 
+            //error handling
+            error('Please select a property key before proceeding');
+          } else {
+            if(valueList.length < propList.length) {
+              addValue(numProps-1);
+            } else {
+              addProp(numProps);
+            }
+          }
+        } else {
+          addProp(0);
+        }
+      });
+
+      $('#addLeftProps').on('click', function() {
+        var numProps = $('.prop_selector_left').length;
+
+        var events = [];
+        for (var i = 0, j = $('.event_select_left').length; i < j; i++) {
+          var eventName = $($('.event_select_left')[i]).val();
+          if (eventName != null) {
+            events.push(eventName);
+          }
+        }
+        leftEventList = events;
+        console.log('event list: ' + leftEventList);
+
+        var leftProps = [];
+        for (var i = 0, j = $('.prop_selector_left').length; i < j; i++) {
+          var leftPropName = $($('.prop_selector_left')[i]).val();
+          if (leftPropName != null) {
+            leftProps.push(leftPropName);
+          }
+        }
+        leftPropList = leftProps;
+        console.log('left props list: ' + leftPropList);
+
+        var leftValues = [];
+        for (var i = 0, j = $('.value_selector_left').length; i < j; i++) {
+          var valueLeftName = $($('.value_selector_left')[i]).val();
+          if (valueLeftName != null) {
+            leftValues.push(valueLeftName);
+          }
+        }
+        leftValueList = leftValues;
+        console.log('left values list: ' + leftValueList);
+
+        if(numProps > 0) {
+          if(leftPropList.length < numProps) { 
+            //error handling
+            error('Please select a property key before proceeding');
+          } else {
+            if(leftValueList.length < leftPropList.length) {
+              addLeftValue(numProps-1);
+            } else {
+              addLeftProp(numProps);
+            }
+          }
+        } else {
+          addLeftProp(0);
+        }
+      });
+
+      $('#addRightProps').on('click', function() {
+        var numProps = $('.prop_selector_right').length;
+
+        var events = [];
+        for (var i = 0, j = $('.event_select_right').length; i < j; i++) {
+          var eventName = $($('.event_select_right')[i]).val();
+          if (eventName != null) {
+            events.push(eventName);
+          }
+        }
+        rightEventList = events;
+        console.log('event list: ' + rightEventList);
+
+        var rightProps = [];
+        for (var i = 0, j = $('.prop_selector_right').length; i < j; i++) {
+          var rightPropName = $($('.prop_selector_right')[i]).val();
+          if (rightPropName != null) {
+            rightProps.push(rightPropName);
+          }
+        }
+        rightPropList = rightProps;
+        console.log('right props list: ' + rightPropList);
+
+        var rightValues = [];
+        for (var i = 0, j = $('.value_selector_right').length; i < j; i++) {
+          var valueRightName = $($('.value_selector_right')[i]).val();
+          if (valueRightName != null) {
+            rightValues.push(valueRightName);
+          }
+        }
+        rightValueList = rightValues;
+        console.log('right values list: ' + rightValueList);
+
+        if(numProps > 0) {
+          if(rightPropList.length < numProps) { 
+            //error handling
+            error('Please select a property key before proceeding');
+          } else {
+            if(rightValueList.length < rightPropList.length) {
+              addRightValue(numProps-1);
+            } else {
+              addRightProp(numProps);
+            }
+          }
+        } else {
+          addRightProp(0);
+        }
+      });
+
+      $('#leftRemove').on('click', function() {
+        var numEvents = $('.event_select_left').length;
+        $($('.event_select_left')[numEvents-1]).remove();
+        $($('.left_events')[numEvents-2]).remove();
+      });
+
+      $('#rightRemove').on('click', function() {
+        var numEvents = $('.event_select_right').length;
+        $($('.event_select_right')[numEvents-1]).remove();
+        $($('.right_events')[numEvents-2]).remove();
+      });
+
+      $('#leftRemoveFilter').on('click', function() {
+        var numEvents = $('.event_select_filter_left').length;
+        $($('.event_select_filter_left')[numEvents-1]).remove();
+        $($('.behavior_selector_left')[numEvents-1]).remove();
+        $($('.left_filter_events')[numEvents-1]).remove();
+        $($('.left_behavior_filter_between')[numEvents-1]).remove();
+        $($('.left_behavior_filter_and')[numEvents-1]).remove();
+        $($('.left_behavior_filter_daysago')[numEvents-1]).remove();
+        $($('.behavior_selector_to_left')[numEvents-1]).remove();
+        $($('.behavior_selector_from_left')[numEvents-1]).remove();
+        $($('.left_filter')[numEvents-2]).remove();
+      });
+
+      $('#rightRemoveFilter').on('click', function() {
+        var numEvents = $('.event_select_filter_right').length;
+        $($('.event_select_filter_right')[numEvents-1]).remove();
+        $($('.behavior_selector_right')[numEvents-1]).remove();
+        $($('.right_filter_events')[numEvents-1]).remove();
+        $($('.right_behavior_filter_between')[numEvents-1]).remove();
+        $($('.right_behavior_filter_and')[numEvents-1]).remove();
+        $($('.right_behavior_filter_daysago')[numEvents-1]).remove();
+        $($('.behavior_selector_to_right')[numEvents-1]).remove();
+        $($('.behavior_selector_from_right')[numEvents-1]).remove();
+        $($('.right_filter')[numEvents-2]).remove();
+      });
+
+      $('#removeProps').on('click', function() {
+        var numProps = $('.prop_selector').length;
+        console.log(numProps);
+        $($('.value_selector')[numProps-1]).remove();
+        $($('.prop_selector')[numProps-1]).remove();
+        $($('.props_global')[numProps-1]).remove();
+        delete priorValues[numProps-1];
+        $($('.global_filter')[numProps-2]).remove();
+      });
+
+      $('#removeLeftProps').on('click', function() {
+        var numProps = $('.prop_selector_left').length;
+        console.log(numProps);
+        $($('.value_selector_left')[numProps-1]).remove();
+        $($('.prop_selector_left')[numProps-1]).remove();
+        $($('.props_left')[numProps-1]).remove();
+        delete priorLeftValues[numProps-1];
+        $($('.global_filter_left')[numProps-2]).remove();
+      });
+
+      $('#removeRightProps').on('click', function() {
+        var numProps = $('.prop_selector_right').length;
+        console.log(numProps);
+        $($('.value_selector_right')[numProps-1]).remove();
+        $($('.prop_selector_right')[numProps-1]).remove();
+        $($('.props_right')[numProps-1]).remove();
+        delete priorRightValues[numProps-1];
+        $($('.global_filter_right')[numProps-1]).remove();
+      });
+
+      //to do
+      //consolidate the methods for grabbing event, prop, value lists
+
+      // run error checks when button is clicked
+      $('#run').on('click', function() {
+
+        var savedParams = document.getElementById("input");
+        if (savedParams && savedParams.value) { // we have saved parameters
+          
+          console.log('Found stored params');
+          console.log(savedParams.value);
+          var allParams = savedParams.value.split('&');
+
+          _.each(allParams, function(param) {
+              var keyValue = param.split('=');
+              var key = keyValue[0];
+              var value = decodeURI(keyValue[1]);
+              if(key == 'leftEventFilterList') {
+                  leftEventFilterList = value.split(',');
+                  for(i=0; i<leftEventFilterList.length; i++) {
+                    if(!paramsLoaded) {
+                      addLeftEventFilter(i, leftEventFilterList[i]);
+                    }
+                  }
+              } else if(key == 'leftEventBehaviorList') {
+                  leftFilterBehaviorList = value.split(',');
+                  for(i=0; i<leftFilterBehaviorList.length; i++) {
+                    if(!leftFilterBehaviorList[i]) {
+                      var options = {};
+                      options.items = [];
+                      options.items.push({label: 'Was Not Performed', value: 'false'});
+                      options.items.push({label: 'Was Performed', value: 'true'});
+                      $($('.behavior_selector_left')[i]).MPSelect('initEl', options);
+                    }
+                  }
+              } else if(key == 'leftFilterDateList') {
+                  leftFilterDateList = value.split(',');
+                  for(i=0; i<leftFilterDateList.length/2; i++) {
+                    $($('.behavior_selector_from_left')[i]).val(leftFilterDateList[i*2]);
+                    $($('.behavior_selector_to_left')[i]).val(leftFilterDateList[i*2+1]);
+                  }
+              } else if(key == 'rightEventFilterList') {
+                  rightEventFilterList = value.split(',');
+                  for(i=0; i<rightEventFilterList.length; i++) {
+                    if(!paramsLoaded) {
+                      addRightEventFilter(i, rightEventFilterList[i]);
+                    }
+                  }
+              } else if(key == 'rightEventBehaviorList') {
+                  rightFilterBehaviorList = value.split(',');
+                  for(i=0; i<rightFilterBehaviorList.length; i++) {
+                    if(!rightFilterBehaviorList[i]) {
+                      var options = {};
+                      options.items = [];
+                      options.items.push({label: 'Was Not Performed', value: 'false'});
+                      options.items.push({label: 'Was Performed', value: 'true'});
+                      $($('.behavior_selector_right')[i]).MPSelect('initEl', options);
+                    }
+                  }
+              } else if(key == 'rightFilterDateList') {
+                  rightFilterDateList = value.split(',');
+                  for(i=0; i<rightFilterDateList.length/2; i++) {
+                    $($('.behavior_selector_from_right')[i]).val(rightFilterDateList[i*2]);
+                    $($('.behavior_selector_to_right')[i]).val(rightFilterDateList[i*2+1]);
+                  }
+              } else if(key == 'leftEventList') {
+                  leftEventList = value.split(',');
+                  for(i=0; i<leftEventList.length; i++) {
+                    if(!paramsLoaded) {
+                      addLeftEvent(i, leftEventList[i]);
+                    }
+                  }
+              } else if(key == 'rightEventList') {
+                  rightEventList = value.split(',');
+                  for(i=0; i<rightEventList.length; i++) {
+                    if(!paramsLoaded) {
+                      addRightEvent(i, rightEventList[i]);
+                    }
+                  }
+              } else if(key == 'propsValueList') {
+                  propsValueList = value.split(',');
+                  for(i=0; i<propsValueList.length; i++) {
+                      propList.push(propsValueList[i].split(':')[0])
+                      valueList.push(propsValueList[i].split(':')[1])
+                  }
+                  if(propList.length == valueList.length) {
+                      for(i=0; i<propList.length; i++) {
+                          if(!paramsLoaded) {
+                              addProp(i, propList[i]);
+                              addValue(i, valueList[i]);
+                          }
+                      }
+                  } else {
+                      error('Invalid URL params for propList and/or valueList');
+                  }
+              } else if(key == 'leftPropsValueList') {
+                  leftPropsValueList = value.split(',');
+                  for(i=0; i<leftPropsValueList.length; i++) {
+                      leftPropList.push(leftPropsValueList[i].split(':')[0])
+                      leftValueList.push(leftPropsValueList[i].split(':')[1])
+                  }
+                  if(leftPropList.length == leftValueList.length) {
+                      for(i=0; i<leftPropList.length; i++) {
+                          if(!paramsLoaded) {
+                              addLeftProp(i, leftPropList[i]);
+                              addLeftValue(i, leftValueList[i]);
+                          }
+                      }
+                  } else {
+                      error('Invalid URL params for propList and/or valueList');
+                  }
+              } else if(key == 'rightPropsValueList') {
+                  rightPropsValueList = value.split(',');
+                  for(i=0; i<rightPropsValueList.length; i++) {
+                      rightPropList.push(rightPropsValueList[i].split(':')[0])
+                      rightValueList.push(rightPropsValueList[i].split(':')[1])
+                  }
+                  if(rightPropList.length == rightValueList.length) {
+                      for(i=0; i<rightPropList.length; i++) {
+                          if(!paramsLoaded) {
+                              addRightProp(i, rightPropList[i]);
+                              addRightValue(i, rightValueList[i]);
+                          }
+                      }
+                  } else {
+                      error('Invalid URL params for propList and/or valueList');
+                  }
+              } else if(key == 'type') {
+                  if(value == 'total') {
+                    var toggle = $('#chart-type-toggle');
+                    chartTypeState = 'right';
+                    chartTypeVal = chartTypeRight;
+
+                    toggle.find($('.rounded-toggle-text-right')).addClass('rounded-toggle-text-selected');
+                    toggle.find($('.rounded-toggle-text-left')).removeClass('rounded-toggle-text-selected');
+
+                    toggle.find($('.rounded-toggle-circle')).removeClass('rounded-toggle-circle-left');
+                    toggle.find($('.rounded-toggle-circle')).addClass('rounded-toggle-circle-right');
+
+                    toggle.find($('.rounded-toggle-text-left')).removeClass('rounded-toggle-circle-left-selected');
+                    toggle.find($('.rounded-toggle-text-right')).addClass('rounded-toggle-circle-right-selected');
+                  }
+              } else if(key == 'graph') {
+                  if(value == 'line') {
+                    var toggle = $('#chart-count-toggle');
+                    chartCountState = 'right';
+                    chartCountVal = chartCountRight;
+
+                    toggle.find($('.rounded-toggle-text-right')).addClass('rounded-toggle-text-selected');
+                    toggle.find($('.rounded-toggle-text-left')).removeClass('rounded-toggle-text-selected');
+
+                    toggle.find($('.rounded-toggle-circle')).removeClass('rounded-toggle-circle-left');
+                    toggle.find($('.rounded-toggle-circle')).addClass('rounded-toggle-circle-right');
+
+                    toggle.find($('.rounded-toggle-text-left')).removeClass('rounded-toggle-circle-left-selected');
+                    toggle.find($('.rounded-toggle-text-right')).addClass('rounded-toggle-circle-right-selected');
+                  }
+              } else if(key == 'unit') {
+                if(value == 'week') {
+                  var unitOptions = {
+                    items: [
+                      {label: 'Week', value: 'week'},
+                      {label: 'Day', value: 'day'},
+                      {label: 'Month', value: 'month'},
+                    ]
+                  };
+                  $('#unitType').MPSelect('initEl', unitOptions);
+                } else if (value == 'month') {
+                  var unitOptions = {
+                    items: [
+                      {label: 'Month', value: 'month'},
+                      {label: 'Day', value: 'day'},
+                      {label: 'Week', value: 'week'},
+                    ]
+                  };
+                  $('#unitType').MPSelect('initEl', unitOptions);
+                }
+              } else if(key == 'leftDate') {
+                var dateSelect = $('#leftDates').MPDatepicker();
+                toDate = new Date();
+                fromDate = new Date();
+                dateSelectTime = dateSelect.val();
+                toDate = new Date(new Date().getTime() - 60*60*24*1000*value.split(",")[1]);
+                fromDate = new Date(new Date().getTime() - 60*60*24*1000*value.split(",")[0]);
+                dateSelectTime.from = fromDate;
+                dateSelectTime.to = toDate;
+                dateSelect.val(dateSelectTime);
+              } else if(key == 'rightDate') {
+                var dateSelect = $('#rightDates').MPDatepicker();
+                toDate = new Date();
+                fromDate = new Date();
+                dateSelectTime = dateSelect.val();
+                toDate = new Date(new Date().getTime() - 60*60*24*1000*value.split(",")[1]);
+                fromDate = new Date(new Date().getTime() - 60*60*24*1000*value.split(",")[0]);
+                dateSelectTime.from = fromDate;
+                dateSelectTime.to = toDate;
+                dateSelect.val(dateSelectTime);
+              }
+          });
+          
+          if(leftEventList.length < 2 || rightEventList.length < 2) { 
+              error('Please select more than one event before proceeding');
+          } else if(leftEventFilterList.length < 1 || rightEventFilterList.length < 1) { 
+              error('Please select at least one prior activity filter before proceeding');
+          } else if(propList.length !== valueList.length || leftPropList.length !== leftValueList.length || rightPropList.length !== rightValueList.length) {
+              error('Please correct property assignment error before proceeding');
+          } else {
+              paramsLoaded = true;
+              runQuery();
+          }
+
+        } else { // we are starting this report from scratch
+
+          console.log('No stored params');
+          var leftFilterEvents = [];
+          for (var i = 0, j = $('.event_select_filter_left').length; i < j; i++) {
+            var eventName = $($('.event_select_filter_left')[i]).val();
+            if (eventName != null) {
+              leftFilterEvents.push(eventName);
+            }
+          }
+          leftEventFilterList = leftFilterEvents;
+          console.log('left event filter list: ' + leftEventFilterList);
+
+          var leftFilterBehaviors = [];
+          for (var i = 0, j = $('.behavior_selector_left').length; i < j; i++) {
+            var behaviorValue = $($('.behavior_selector_left')[i]).val();
+            if (behaviorValue != null) {
+              leftFilterBehaviors.push(behaviorValue);
+            }
+          }
+          leftFilterBehaviorList = leftFilterBehaviors;
+          console.log('left event behavior list: ' + leftFilterBehaviorList);
+
+          var leftFilterDates = [];
+          var validLeftDates = true;
+          for (var i = 0, j = $('.behavior_selector_from_left').length; i < j; i++) {
+            var dateValue = $($('.behavior_selector_from_left')[i]).val();
+            if (dateValue != '') {
+              leftFilterDates.push(dateValue);
+            }
+            if(dateValue > Math.floor((new Date().getTime() - $('#leftDates').val().from)/(60*60*24*1000)) + 1 || dateValue < Math.floor((new Date().getTime() - $('#leftDates').val().to)/(60*60*24*1000))) {
+              validLeftDates = false;
+            }
+            var dateValue = $($('.behavior_selector_to_left')[i]).val();
+            if (dateValue != '') {
+              leftFilterDates.push(dateValue);
+            }
+            if(dateValue > Math.floor((new Date().getTime() - $('#leftDates').val().from)/(60*60*24*1000)) + 1 || dateValue < Math.floor((new Date().getTime() - $('#leftDates').val().to)/(60*60*24*1000))) {
+              validLeftDates = false;
+            }
+          }
+          leftFilterDateList = leftFilterDates;
+          console.log('left event behavior date list: ' + leftFilterDateList);
+
+          var rightFilterEvents = [];
+          for (var i = 0, j = $('.event_select_filter_right').length; i < j; i++) {
+            var eventName = $($('.event_select_filter_right')[i]).val();
+            if (eventName != null) {
+              rightFilterEvents.push(eventName);
+            }
+          }
+          rightEventFilterList = rightFilterEvents;
+          console.log('right event filter list: ' + rightEventFilterList);
+
+          var rightFilterBehaviors = [];
+          for (var i = 0, j = $('.behavior_selector_right').length; i < j; i++) {
+            var behaviorValue = $($('.behavior_selector_right')[i]).val();
+            if (behaviorValue != null) {
+              rightFilterBehaviors.push(behaviorValue);
+            }
+          }
+          rightFilterBehaviorList = rightFilterBehaviors;
+          console.log('right event behavior list: ' + rightFilterBehaviorList);
+
+          var rightFilterDates = [];
+          var validRightDates = true;
+          for (var i = 0, j = $('.behavior_selector_from_right').length; i < j; i++) {
+            var dateValue = $($('.behavior_selector_from_right')[i]).val();
+            if (dateValue != '') {
+              rightFilterDates.push(dateValue);
+            }
+            if(dateValue > Math.floor((new Date().getTime() - $('#rightDates').val().from)/(60*60*24*1000)) + 1 || dateValue < Math.floor((new Date().getTime() - $('#rightDates').val().to)/(60*60*24*1000))) {
+              validRightDates = false;
+            }
+            var dateValue = $($('.behavior_selector_to_right')[i]).val();
+            if (dateValue != '') {
+              rightFilterDates.push(dateValue);
+            }
+            if(dateValue > Math.floor((new Date().getTime() - $('#rightDates').val().from)/(60*60*24*1000)) + 1 || dateValue < Math.floor((new Date().getTime() - $('#rightDates').val().to)/(60*60*24*1000))) {
+              validRightDates = false;
+            }
+          }
+          rightFilterDateList = rightFilterDates;
+          console.log('right event behavior date list: ' + rightFilterDateList);
+
+          var leftEvents = [];
+          for (var i = 0, j = $('.event_select_left').length; i < j; i++) {
+            var eventName = $($('.event_select_left')[i]).val();
+            if (eventName != null) {
+              leftEvents.push(eventName);
+            }
+          }
+          leftEventList = leftEvents;
+          console.log('left event list: ' + leftEventList);
+
+          var rightEvents = [];
+          for (var i = 0, j = $('.event_select_right').length; i < j; i++) {
+            var eventName = $($('.event_select_right')[i]).val();
+            if (eventName != null) {
+              rightEvents.push(eventName);
+            }
+          }
+          rightEventList = rightEvents;
+          console.log('right event list: ' + rightEventList);
+
+          if(leftEventList.length < 2 || rightEventList.length < 2) { 
+              error('Please select more than one event before proceeding');
+          } else if(leftEventFilterList.length < 1 || rightEventFilterList.length < 1) { 
+              error('Please select at least one prior activity filter before proceeding');
+          } else if(leftFilterDateList.length !== $('.behavior_selector_from_left').length + $('.behavior_selector_to_left').length || rightFilterDateList.length !== $('.behavior_selector_from_right').length + $('.behavior_selector_to_right').length) {
+              error('Please add dates to prior behavior filter before proceeding');
+          } else if(!validLeftDates || !validRightDates) {
+              error('Please correct prior behavior filters to be a subset of the date range');
+          } else {
+              var props = [];
+              for (var i = 0, j = $('.prop_selector').length; i < j; i++) {
+                  var propName = $($('.prop_selector')[i]).val();
+                  if (propName != null) {
+                    props.push(propName);
+                  }
+              }
+              propList = props;
+              console.log('props list: ' + propList);
+
+              var values = [];
+              for (var i = 0, j = $('.value_selector').length; i < j; i++) {
+                  var valueName = $($('.value_selector')[i]).val();
+                  if (valueName != null) {
+                    values.push(valueName);
+                  }
+              }
+              valueList = values;
+              console.log('values list: ' + valueList);
+
+              var leftProps = [];
+              for (var i = 0, j = $('.prop_selector_left').length; i < j; i++) {
+                  var leftPropName = $($('.prop_selector_left')[i]).val();
+                  if (leftPropName != null) {
+                      leftProps.push(leftPropName);
+                  }
+              }
+              leftPropList = leftProps;
+              console.log('left props list: ' + leftPropList);
+
+              var leftValues = [];
+              for (var i = 0, j = $('.value_selector_left').length; i < j; i++) {
+                  var valueLeftName = $($('.value_selector_left')[i]).val();
+                  if (valueLeftName != null) {
+                      leftValues.push(valueLeftName);
+                  }
+              }
+              leftValueList = leftValues;
+              console.log('left values list: ' + leftValueList);
+
+              var rightProps = [];
+              for (var i = 0, j = $('.prop_selector_right').length; i < j; i++) {
+                  var rightPropName = $($('.prop_selector_right')[i]).val();
+                  if (rightPropName != null) {
+                      rightProps.push(rightPropName);
+                  }
+              }
+              rightPropList = rightProps;
+              console.log('right props list: ' + rightPropList);
+
+              var rightValues = [];
+              for (var i = 0, j = $('.value_selector_right').length; i < j; i++) {
+                  var valueRightName = $($('.value_selector_right')[i]).val();
+                  if (valueRightName != null) {
+                      rightValues.push(valueRightName);
+                  }
+              }
+              rightValueList = rightValues;
+              console.log('right values list: ' + rightValueList);
+
+              paramsLoaded = true;
+              runQuery();
+          }
+        }        
+      });
+
+      $('#annotationRun').on('click', function() {
+        if($('#annotationDateInput').val().charAt(4) == '-' && $('#annotationDateInput').val().charAt(7) == '-' && !isNaN(Number($('#annotationDateInput').val().substring(0,4))) && !isNaN(Number($('#annotationDateInput').val().substring(5,7))) && !isNaN(Number($('#annotationDateInput').val().substring(8,10)))) {
+            if($('#annotationTextInput').val().length > 0) {
+                MP.api.query('/api/2.0/annotations/create/', {date: $('#annotationDateInput').val() + ' 00:00:00', description: $('#annotationTextInput').val()});
+                runQuery();
+            } else {
+                error('Please enter text for the annotation');
+            }
+          } else {
+            error('Please enter a valid date for the annotation');
+          }
+      });
+
+      // run the query if all checks have been passed
+      var runQuery = function() {
+
+        $('#table').empty();
+        $("#funnelLeft").empty();
+        $("#funnelRight").empty();
+        $("#funnelLeftBar").empty();
+        $("#funnelRightBar").empty();
+        $('#annotations').empty();
+        $('#annotationDate').empty();
+        $('#annotationText').empty();
+        $('#annotationDateInput').remove();
+        $('#annotationTextInput').remove();
+        $('#annotationRun').empty();
+
+        var selector = '';
+        for(i=0; i<propList.length; i++) {
+          selector = selector + '(string(properties["' + propList[i] + '"]) == "' + valueList[i] + '") and'
+        }
+
+        var leftSelector = selector;
+        for(i=0; i<leftPropList.length; i++) {
+          if(i < leftPropList.length - 1) {
+            leftSelector = leftSelector + '(string(properties["' + leftPropList[i] + '"]) == "' + leftValueList[i] + '") and'
+          } else {
+            if(leftPropList.length == leftValueList.length) {
+              leftSelector = leftSelector + '(string(properties["' + leftPropList[i] + '"]) == "' + leftValueList[i] + '")'
+            } else {
+              leftSelector = leftSelector.substring(0, leftSelector.length - 3);
+            }
+          }
+        }
+        if(leftPropList.length == 0 && selector.length > 0) {
+          leftSelector = selector.substring(0, selector.length - 4);
+        }
+
+        var rightSelector = selector;
+        for(i=0; i<rightPropList.length; i++) {
+          if(i < rightPropList.length - 1) {
+            rightSelector = rightSelector + '(string(properties["' + rightPropList[i] + '"]) == "' + rightValueList[i] + '") and'
+          } else {
+            if(rightPropList.length == rightValueList.length) {
+              rightSelector = rightSelector + '(string(properties["' + rightPropList[i] + '"]) == "' + rightValueList[i] + '")'
+            } else {
+              rightSelector = rightSelector.substring(0, rightSelector.length - 3);
+            }
+          }
+        }
+        if(rightPropList.length == 0 && selector.length > 0) {
+          rightSelector = selector.substring(0, selector.length - 4);
+        }
+
+        var funnelEventsLeft = [];
+        _.each(leftEventList, function(event) {
+          if(leftSelector !== '') {
+            funnelEventsLeft.push({"event": event, "selector": leftSelector});
+          } else {
+            funnelEventsLeft.push({"event": event});
+          }
+        });
+        var funnelBehaviorsLeft = [];
+        _.each(leftEventFilterList, function(event) {
+          if(selector !== '') {
+            funnelBehaviorsLeft.push({"event": event, "selector": selector.substring(0, selector.length - 3)});
+          } else {
+            funnelBehaviorsLeft.push({"event": event});
+          }
+        });
+        var totalLeftEvents = _.union(funnelEventsLeft,funnelBehaviorsLeft);
+        console.log('left funnel events to query:');
+        console.log(funnelEventsLeft);
+
+        var leftParams = {
+          to: new Date($('#leftDates').val().to.getTime() + 60*60*1000*3), //adding buffer to date to accomodate for DST issues
+          from: new Date($('#leftDates').val().from.getTime() + 60*60*1000*3), //adding buffer to date to accomodate for DST issues
+          events: funnelEventsLeft,
+          selector: totalLeftEvents,
+          behaviors: leftEventFilterList,
+          behaviors_values: leftFilterBehaviorList,
+          behaviors_dates: leftFilterDateList,
+          type: chartCountVal, // was formerly dropdown with $('#queryType').val()
+          graph: chartTypeVal, // was formerly dropdown with $('#graphType').val()
+          unit: $('#unitType').val(),
+        };
+
+        console.log('left funnel params to query:');
+        console.log(leftParams);
+
+        var funnelEventsRight = [];
+        _.each(rightEventList, function(event) {
+          if(rightSelector !== '') {  
+            funnelEventsRight.push({"event": event, "selector": rightSelector});
+          } else {
+            funnelEventsRight.push({"event": event});
+          }
+        });
+        var funnelBehaviorsRight = [];
+        _.each(rightEventFilterList, function(event) {
+            if(selector !== '') {  
+                funnelBehaviorsRight.push({"event": event, "selector": selector.substring(0, selector.length - 3)});
+            } else {
+                funnelBehaviorsRight.push({"event": event});
+            }
+        });
+        var totalRightEvents = _.union(funnelEventsRight,funnelBehaviorsRight);
+        console.log('right funnel events to query:');
+        console.log(funnelEventsRight);
+
+        var rightParams = {
+          to: new Date($('#rightDates').val().to.getTime() + 60*60*1000*3), //adding buffer to date to accomodate for DST issues
+          from: new Date($('#rightDates').val().from.getTime() + 60*60*1000*3), //adding buffer to date to accomodate for DST issues
+          events: funnelEventsRight,
+          selector: totalRightEvents,
+          behaviors: rightEventFilterList,
+          behaviors_values: rightFilterBehaviorList,
+          behaviors_dates: rightFilterDateList,
+          type: chartCountVal, // was formerly dropdown with $('#queryType').val()
+          graph: chartTypeVal, // was formerly dropdown with $('#graphType').val()
+          unit: $('#unitType').val(),
+        };
+
+        console.log('right funnel params to query:');
+        console.log(rightParams);
+
+        var leftSegParams = {
+          to: new Date($('#leftDates').val().to.getTime() + 60*60*1000*3), //adding buffer to date to accomodate for DST issues
+          from: new Date($('#leftDates').val().from.getTime() + 60*60*1000*3), //adding buffer to date to accomodate for DST issues
+          selector: funnelBehaviorsLeft,
+          behaviors_dates: leftFilterDateList,
+          unit: $('#unitType').val(),
+        }
+        console.log('left uniques params to query:');
+        console.log(leftSegParams);
+
+        var rightSegParams = {
+          to: new Date($('#rightDates').val().to.getTime() + 60*60*1000*3), //adding buffer to date to accomodate for DST issues
+          from: new Date($('#rightDates').val().from.getTime() + 60*60*1000*3), //adding buffer to date to accomodate for DST issues
+          selector: funnelBehaviorsRight,
+          behaviors_dates: rightFilterDateList,
+          unit: $('#unitType').val(),
+        }
+        console.log('right uniques params to query:');
+        console.log(rightSegParams);
+
+        var scriptCount = $('#jql-count').html();
+
+        MP.api.jql(scriptCount, leftSegParams).done(function(leftUniqueResults) {
+          var uniquesLeft = {};
+          var leftTotal = 0;
+          _.each(leftUniqueResults, function(item) {
+            uniquesLeft[item.Date] = item.Count;
+            leftTotal += item.Count;
+          })
+          console.log(uniquesLeft);
+          $('#left_universe').text('Active Users: ' + leftTotal.toLocaleString());
+          MP.api.jql(scriptCount, rightSegParams).done(function(rightUniqueResults) {
+            var uniquesRight = {};
+            var rightTotal = 0;
+            _.each(rightUniqueResults, function(item) {
+              uniquesRight[item.Date] = item.Count;
+              rightTotal += item.Count;
+            })
+            console.log(uniquesRight);
+            $('#right_universe').text('Active Users: ' + rightTotal.toLocaleString());
+
+            var script = $('#jql-funnel').html();
+
+            // left funnel data
+            MP.api.jql(script, leftParams).done(function(leftResults) {
+              console.log(leftResults);
+              var keys = Object.keys(leftResults[0]);
+              var leftData = {};
+              var leftBarData = {};
+              leftExportData = [];
+              leftData['Conversion Rate'] = {};
+              for(i=0; i<keys.length; i++) {
+                if(!isNaN(keys[i].charAt(0))) {
+                  leftData['Conversion Rate'][keys[i]] = leftResults[0][keys[i]] / uniquesLeft[keys[i]] * 100;
+                  leftExportData.push({'Date': keys[i], 'Active Users': uniquesLeft[keys[i]], 'Converted Users': leftResults[0][keys[i]], 'Conversion Rate': leftResults[0][keys[i]] / uniquesLeft[keys[i]] * 100});
+                }
+              }
+              for(i=0; i<keys.length; i++) {
+                if(isNaN(keys[i].charAt(0))) {
+                    _.each(leftEventList, function(event) {
+                        if(event == keys[i]) {
+                            leftBarData[keys[i]] = leftResults[0][keys[i]];
+                        }
+                    });
+                  }
+              }
+              if(chartTypeVal === 'line') {  // was formerly $('#graphType').val() === 'line'
+                $("#funnelLeft").MPChart({chartType: 'line'});
+                $("#funnelLeft").MPChart('setData', leftData);
+              } else {
+                $("#funnelLeftBar").MPChart({chartType: 'bar'});
+                $("#funnelLeftBar").MPChart('setData', leftBarData);
+              }
+              console.log(leftData);
+              console.log(leftBarData);
+              console.log(leftExportData);
+              
+              // right funnel data
+              MP.api.jql(script, rightParams).done(function(rightResults) {
+                var keys = Object.keys(rightResults[0]);
+                var rightData = {};
+                var rightBarData = {};
+                rightExportData = [];
+                rightData['Conversion Rate'] = {};
+                for(i=0; i<keys.length; i++) {
+                  if(!isNaN(keys[i].charAt(0))) {
+                    rightData['Conversion Rate'][keys[i]] = rightResults[0][keys[i]] / uniquesRight[keys[i]] * 100;
+                    rightExportData.push({'Date': keys[i], 'Active Users': uniquesRight[keys[i]], 'Converted Users': rightResults[0][keys[i]], 'Conversion Rate': rightResults[0][keys[i]] / uniquesRight[keys[i]] * 100});
+                  }
+                }
+                for(i=0; i<keys.length; i++) {
+                  if(isNaN(keys[i].charAt(0))) {
+                    _.each(rightEventList, function(event) {
+                        if(event == keys[i]) {
+                            rightBarData[keys[i]] = rightResults[0][keys[i]];
+                        }
+                    });
+                  }
+                }
+
+                // make the funnel graphs
+                if(chartTypeVal == 'line') {   // was formerly $('#graphType').val() === 'line'
+                  $("#funnelRight").MPChart({chartType: 'line'});
+                  $("#funnelRight").MPChart('setData', rightData);
+                } else {
+                  $("#funnelRightBar").MPChart({chartType: 'bar'});
+                  $("#funnelRightBar").MPChart('setData', rightBarData);
+                }
+                console.log(rightData);
+                console.log(rightBarData);
+                console.log(rightExportData);
+
+                // comparison table
+                $('#table').append('<table>');
+                $('#table').append('<tr>');
+                $('#table').append('<th class="comparison-table-header" >' + 'Date' + '</th>');
+                $('#table').append('<th class="comparison-table-header" >' + 'Left Funnel Conversion' + '</th>');
+                $('#table').append('<th class="comparison-table-header" >' + 'Right Funnel Conversion' + '</th>');
+                $('#table').append('<th class="comparison-table-header" >' + 'Funnel Conversion % Change' + '</th>');
+                $('#table').append('</tr>');
+
+                var leftKeys = Object.keys(leftData['Conversion Rate']);
+                var rightKeys = Object.keys(rightData['Conversion Rate']);
+                var keys = _.union(leftKeys, rightKeys);
+                console.log(keys);
+
+                for(i=0; i<keys.length; i++) {
+                  $('#table').append('<tr>');
+                  $('#table').append('<td class="comparison-table-data" >' + keys[i] + '</td>');
+                  if(leftData['Conversion Rate'][keys[i]]) {
+                    $('#table').append('<td class="comparison-table-data" >' + (leftData['Conversion Rate'][keys[i]]).toFixed(2).toString() + '%' + '</td>');
+                  } else {
+                    $('#table').append('<td class="comparison-table-data" >' + 'N/A' + '</td>');
+                  }
+                  if(rightData['Conversion Rate'][keys[i]]) {
+                    $('#table').append('<td class="comparison-table-data" >' + (rightData['Conversion Rate'][keys[i]]).toFixed(2).toString() + '%' + '</td>');
+                  } else {
+                    $('#table').append('<td class="comparison-table-data" >' + 'N/A' + '</td>');
+                  }
+                  if(leftData['Conversion Rate'][keys[i]] && rightData['Conversion Rate'][keys[i]]) {
+                    $('#table').append('<td class="comparison-table-data" >' + (leftData['Conversion Rate'][keys[i]] - rightData['Conversion Rate'][keys[i]]).toFixed(2).toString() + '%' + '</td>');
+                  } else {
+                    $('#table').append('<td class="comparison-table-data" >' + 'N/A' + '</td>');
+                  }
+                  $('#table').append('</tr>');
+                  var current = new Date
+                }
+                $('#table').append('</table>');
+
+                // add annotations
+                MP.api.query('/api/2.0/annotations/', {from: leftParams.from, to: leftParams.to}).done(function(comments) {
+                    console.log(comments);
+                    $('#annotations').append('<table id="annotationsTable" width="100%">');
+                    $('#annotations').append('<tr>');
+                    $('#annotations').append('<td width="25%" align="center" style="font-weight: bold;font-size: 15px; text-align:center; border:1px solid #b2b2b2;">' + 'Date' + '</td>');
+                    $('#annotations').append('<td width="75%" align="center" style="font-weight: bold;font-size: 15px; text-align:center; border:1px solid #b2b2b2;">' + 'Annotation' + '</td>');
+                    $('#annotations').append('</tr>');
+                    var annotations = comments.annotations;
+                    for(i=0; i<annotations.length; i++) {
+                        $('#annotations').append('<tr>');
+                        $('#annotations').append('<td class="annotation-table-data" >' + annotations[i].date.substring(0,10) + '</td>');
+                        $('#annotations').append('<td class="annotation-table-data" >' + annotations[i].description + '</td>');
+                        $('#annotations').append('</tr>');
+                    }
+                    $('#annotations').append('</table>');
+
+                    $('#annotationDate').append('Date:');
+                    $('<input id="annotationDateInput" class="date_select inline block"></input>').insertAfter('#annotationDate');
+                    $('#annotationText').append('Annotation:');
+                    $('<input id="annotationTextInput" class="date_select inline block"></input>').insertAfter('#annotationText');
+                    $('#annotationRun').append('ADD');
+                    $('#annotationRun').show();
+                });
+              });
+            });
+          });
+        });
+
+        //to do
+        //make the queries not absolutely depend on one another (this is slow in UI)
+      }
+
+      // generate a URL for the given query
+      $("#generate").click(function (event) {
+        var reportParam = '';
+        if(leftEventFilterList.length > 0) {
+          reportParam += 'leftEventFilterList=' + leftEventFilterList.toString() + '&';
+        }
+        if(leftFilterBehaviorList.length > 0) {
+          reportParam += 'leftFilterBehaviorList=' + leftFilterBehaviorList.toString() + '&';
+        }
+        if(leftFilterDateList.length > 0) {
+          reportParam += 'leftFilterDateList=' + leftFilterDateList.toString() + '&';
+        }
+        if(rightEventFilterList.length > 0) {
+          reportParam += 'rightEventFilterList=' + rightEventFilterList.toString() + '&';
+        }
+        if(rightFilterBehaviorList.length > 0) {
+          reportParam += 'rightFilterBehaviorList=' + rightFilterBehaviorList.toString() + '&';
+        }
+        if(rightFilterDateList.length > 0) {
+          reportParam += 'rightFilterDateList=' + rightFilterDateList.toString() + '&';
+        }
+        if(leftEventList.length > 1) {
+          reportParam += 'leftEventList=' + leftEventList.toString() + '&';
+        }
+        if(rightEventList.length > 1) {
+          reportParam += 'rightEventList=' + rightEventList.toString() + '&';
+        }
+        if(propList.length > 0) {
+          reportParam += 'propsValueList=';
+          for(i=0; i<propList.length; i++) {
+            reportParam += propList[i] + ':' + valueList[i];
+          }
+          reportParam += '&';
+        }
+        if(leftPropList.length > 0) {
+          reportParam += 'leftPropsValueList=';
+          for(i=0; i<leftPropList.length; i++) {
+            reportParam += leftPropList[i] + ':' + leftValueList[i];
+          }
+          reportParam += '&';
+        }
+        if(rightPropList.length > 0) {
+          reportParam += 'rightPropsValueList=';
+          for(i=0; i<rightPropList.length; i++) {
+            reportParam += rightPropList[i] + ':' + rightValueList[i];
+          }
+          reportParam += '&';
+        }
+        var dateSelect = $('#leftDates').MPDatepicker();
+        dateSelectTime = dateSelect.val();
+        var range = Math.floor((dateSelectTime.to - dateSelectTime.from)/(60*60*24*1000));
+        var to = Math.floor((new Date().getTime() - new Date(dateSelectTime.to).getTime())/(60*60*24*1000));
+        var from = to + range;
+        reportParam += 'leftDate=' + from + ',' + to + '&';
+        var dateSelect = $('#rightDates').MPDatepicker();
+        dateSelectTime = dateSelect.val();
+        var range = Math.floor((dateSelectTime.to - dateSelectTime.from)/(60*60*24*1000));
+        var to = Math.floor((new Date().getTime() - new Date(dateSelectTime.to).getTime())/(60*60*24*1000));
+        var from = to + range;
+        reportParam += 'rightDate=' + from + ',' + to + '&';
+        reportParam += 'type=' + chartCountVal + '&';
+        reportParam += 'graph=' + chartTypeVal + '&';
+        reportParam += 'unit=' + $('#unitType').val();
+
+        $('#input').val(reportParam);
+      });
+
+      // export results
+      $("#export").click(function (event) {
+        downloadCSV({ filename: "funnel-data-left.csv", data: leftExportData });
+        downloadCSV({ filename: "funnel-data-right.csv", data: rightExportData });
+      });
+
+      function convertArrayOfObjectsToCSV(args) {
+        var result, ctr, keys, columnDelimiter, lineDelimiter, data;
+
+        data = args.data || null;
+        if (data == null || !data.length) {
+          return null;
+        }
+
+        columnDelimiter = args.columnDelimiter || ',';
+        lineDelimiter = args.lineDelimiter || '\n';
+
+        keys = Object.keys(data[0]);
+
+        result = '';
+        result += keys.join(columnDelimiter);
+        result += lineDelimiter;
+
+        data.forEach(function(item) {
+          ctr = 0;
+          keys.forEach(function(key) {
+            if (ctr > 0) result += columnDelimiter;
+
+            result += item[key];
+            ctr++;
+          });
+          result += lineDelimiter;
+        });
+
+        return result;
+      }
+
+      function downloadCSV(args) {
+        var data, filename, link;
+
+        data = args.data || leftExportData;
+
+        var csv = convertArrayOfObjectsToCSV({
+          data: data
+        });
+        if (csv == null) return;
+
+        filename = args.filename || 'export.csv';
+
+        if (!csv.match(/^data:text\/csv/i)) {
+          csv = 'data:text/csv;charset=utf-8,' + csv;
+        }
+        data = encodeURI(csv);
+
+        link = document.createElement('a');
+        link.setAttribute('href', data);
+        link.setAttribute('download', filename);
+        link.click();
+      }
+    </script>
+
+    <script id='jql-count'>
+        function main() {
+          return Events({
+            from_date: params.from.substring(0,10),
+            to_date:   params.to.substring(0,10),
+            event_selectors: params.selector
+          })
+          .groupByUser([function(event) { return findDay(params.unit, params.from, event.time) }], mixpanel.reducer.count())
+          .groupBy([function(item) { return item.key[1]; }], mixpanel.reducer.count())
+          .map(function(item) {
+            var obj = {};
+            return {
+              'Date': item.key[0],
+              'Count': item.value
+            }
+          })
+          .filter(function(item) {
+            return item.Date !== null;
+          })
+        }
+
+        function findDay(unit, from, time) {
+          var find = new Date(time);
+          var current = new Date(from);
+          if(unit == 'day') {
+            var seconds = 1000 * 60 * 60 * 24;
+          } else if(unit == 'week') {
+            var seconds = 1000 * 60 * 60 * 24 * 7;
+          } else if(unit == 'month') {
+            var seconds = 1000 * 60 * 60 * 24 * 30;
+            var month = true;
+          }
+          while(current < find) {
+            if(month === true) {
+              if(current.getMonth() == 12) {
+                if(new Date(current.getFullYear() + 1, 1, 1) < find) {
+                  current = new Date(current.getFullYear() + 1, 1, 1);
+                } else {
+                  break;
+                }
+              } else {
+                if(new Date(current.getFullYear(), current.getMonth() + 1, 1) < find) {
+                  current = new Date(current.getFullYear(), current.getMonth() + 1, 1);
+                } else {
+                  break;
+                }
+              }
+            } else {
+              if(new Date(current.getTime() + seconds) < find) {
+                current = new Date(current.getTime() + seconds);
+              } else {
+                break;
+              }
+            }
+          }
+          var remainder = new Date().getTime();
+          var yestMidnight = new Date(remainder - remainder % (24 * 60 * 60 * 1000));
+          var date = new Date(yestMidnight.getTime() + 24 * 60 * 60 * 1000);
+          if(time > new Date(date.getTime() - params.behaviors_dates[1]*60*60*24*1000) && time < new Date(date.getTime() - params.behaviors_dates[0]*60*60*24*1000)) {
+            return current.toISOString().substring(0,10);
+          } else {
+            return null;
+          }
+        }
+    </script>
+
+    <script id='jql-funnel'>
+        function main() {
+          return Events({
+            from_date: params.from.substring(0,10),
+            to_date:   params.to.substring(0,10),
+            event_selectors: params.selector
+          })
+          .groupByUser(function(state, events) {
+            state = state || getDays(params.unit, params.to, params.from, params.selector);
+            _.each(events, function(event) {
+              // check if user meets funnel criteria
+              for(i=0; i<params.events.length; i++) {
+                // any middle step
+                if(i !== 0 && i !== params.events.length-1 && event.name == params.events[i]['event']) {
+                  if(state[params.events[i]['event']] == state[params.events[i-1]['event']] - 1) { 
+                    if(params.type == 'unique') {
+                      state[event.name] = 1;
+                    } else {
+                      state[event.name] += 1;
+                    }
+                  }
+                } else if(i === 0 && event.name == params.events[i]['event'] && state[params.events[0]['event']] == state[params.events[params.events.length-1]['event']]) { // first step
+                  if(params.type == 'unique') {
+                    state[event.name] = 1;
+                  } else {
+                    state[event.name] += 1;
+                  }
+                  state.time = event.time;
+                } else if(i == params.events.length-1 && event.name == params.events[i]['event']) { // final step
+                  if(params.type == 'unique') {
+                    if(state[event.name] === 0 && state[params.events[i-1]['event']] == 1) {
+                      var recordDay = findDay(params.unit, params.from, state.time);
+                      state[recordDay] = 1;
+                      state[event.name] = 1;
+                    }
+                  } else {
+                    if(state[params.events[i]['event']] == state[params.events[i-1]['event']] - 1) {
+                      var recordDay = findDay(params.unit, params.from, state.time);
+                      state[recordDay] += 1;
+                      state[event.name] += 1;
+                    }
+                  }
+                }
+              }
+              // add behaviors data to analysis
+              for(i=0; i<params.behaviors.length; i++) {
+                var remainder = new Date().getTime();
+                var yestMidnight = new Date(remainder - remainder % (24 * 60 * 60 * 1000));
+                var date = new Date(yestMidnight.getTime() + 24 * 60 * 60 * 1000);
+                if(event.name == params.behaviors[i] && event.time > new Date(date.getTime() - params.behaviors_dates[i*2+1]*60*60*24*1000) && event.time < new Date(date.getTime() - params.behaviors_dates[i*2]*60*60*24*1000)) { 
+                  state[event.name] = 1;
+                }
+              }
+            })
+            return state;
+          })
+          .filter(function(item) {
+            if(params.behaviors.length == params.behaviors_values.length) {
+              for(i=0; i<params.behaviors.length; i++) {
+                if((item.value[params.behaviors[i]] == 1 && params.behaviors_values[i] == "true") || (item.value[params.behaviors[i]] === 0 && params.behaviors_values[i] == "false")) {
+                  item.value['behaviors'] = true;
+                } else {
+                  item.value['behaviors'] = false;
+                  break;
+                }
+              }
+            } else {
+              item.value['behaviors'] = true;
+            }
+            return item;
+          })
+          .filter(function(item) { 
+            return item.value.behaviors === true;
+          })
+          .map(function(item) {
+            var obj = {};
+            var keys = Object.keys(item.value);
+            for(i=0; i<keys.length; i++) {
+              if(keys[i] !== 'time' && keys[i] !== 'behaviors') {
+                obj[keys[i]] = item.value[keys[i]];
+              }
+            }
+            return obj;
+          })
+          .reduce(mixpanel.reducer.object_merge());
+        }
+
+        function getDays(unit, to, from, events) {
+          var obj = {};
+          var start = new Date(from);
+          var end = new Date(new Date(to).getTime() + 60 * 60 * 24 * 1000);
+          var current = start;
+          if(unit == 'day') {
+            var seconds = 1000 * 60 * 60 * 24;
+          } else if(unit == 'week') {
+            var seconds = 1000 * 60 * 60 * 24 * 7;
+          } else if(unit == 'month') {
+            var month = true;
+          }
+          while(current < end) {
+            if(month === true) {
+              obj[current.toISOString().substring(0,10)] = 0;
+              if(current.getMonth() == 12) {
+                current = new Date(current.getFullYear() + 1, 1, 1);
+              } else {
+                current = new Date(current.getFullYear(), current.getMonth() + 1, 1);
+              }
+            } else {
+              obj[current.toISOString().substring(0,10)] = 0;
+              current = new Date(current.getTime() + seconds);
+            }
+          }
+          for(i=0; i<events.length; i++) { 
+            obj[events[i]['event']] = 0;
+          }
+          obj['time'] = 0;
+          return obj;
+        }
+
+        function findDay(unit, from, time) {
+          var find = new Date(time);
+          var current = new Date(from);
+          if(unit == 'day') {
+            var seconds = 1000 * 60 * 60 * 24;
+          } else if(unit == 'week') {
+            var seconds = 1000 * 60 * 60 * 24 * 7;
+          } else if(unit == 'month') {
+            var seconds = 1000 * 60 * 60 * 24 * 30;
+            var month = true;
+          }
+          while(current < find) {
+            if(month === true) {
+              if(current.getMonth() == 12) {
+                if(new Date(current.getFullYear() + 1, 1, 1) < find) {
+                  current = new Date(current.getFullYear() + 1, 1, 1);
+                } else {
+                  break;
+                }
+              } else {
+                if(new Date(current.getFullYear(), current.getMonth() + 1, 1) < find) {
+                  current = new Date(current.getFullYear(), current.getMonth() + 1, 1);
+                } else {
+                  break;
+                }
+              }
+            } else {
+              if(new Date(current.getTime() + seconds) < find) {
+                current = new Date(current.getTime() + seconds);
+              } else {
+                break;
+              }
+            }
+          }
+          return current.toISOString().substring(0,10);
+        }
     </script>
   </body>
 </html>
